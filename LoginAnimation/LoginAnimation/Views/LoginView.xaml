@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:triggers="clr-namespace:LoginAnimation.Triggers;assembly=LoginAnimation"
+             x:Class="LoginAnimation.Views.LoginView">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Image Opacity="1"
+                   Source="image_bg.png"
+                   Aspect="AspectFill"/>
+
+            <Grid>
+                <Grid.Padding>
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <OnPlatform.iOS>
+                            0, 20, 0, 0
+                        </OnPlatform.iOS>
+                        <OnPlatform.Android>
+                            0, 0, 0, 0
+                        </OnPlatform.Android>
+                        <OnPlatform.WinPhone>
+                            0, 0, 0, 0
+                        </OnPlatform.WinPhone>
+                    </OnPlatform>
+                </Grid.Padding>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Row="0">
+                    <Label Text="Login" TextColor="White" HorizontalTextAlignment="Center" />
+                </StackLayout>
+                <StackLayout Grid.Row="1">
+                    <ActivityIndicator x:Name="activityIndicator"
+                                       IsRunning="{Binding IsBusy}"
+                                       IsVisible="{Binding IsBusy}"
+                                       Color="Blue"
+                    />
+                    <Label x:Name="labelBusyMessage" IsVisible="{Binding IsBusy}" Text="{Binding BusyMessage}" >
+                        <Label.Font>
+                            <OnPlatform x:TypeArguments="Font">
+                                <OnPlatform.iOS>Small</OnPlatform.iOS>
+                            </OnPlatform>
+                        </Label.Font>
+                    </Label>
+                    <Label x:Name="labelErrorMessage" IsVisible="{Binding IsError}" Text="{Binding ErrorMessage}" TextColor="Red">
+                        <Label.Font>
+                            <OnPlatform x:TypeArguments="Font">
+                                <OnPlatform.iOS>Small</OnPlatform.iOS>
+                            </OnPlatform>
+                        </Label.Font>
+                    </Label>
+                </StackLayout>
+
+                <StackLayout x:Name="slLogin" 
+                             Grid.Row="1" Grid.Column="0" 
+                             IsVisible="True"
+                             Padding="20,20,20,20"
+                >
+                    <Entry Placeholder="Email" Text="{Binding UserId}" Style="{DynamicResource EntryStyle}" />
+                    <Entry Placeholder="Password" Text="{Binding Password}" IsPassword="true" Style="{DynamicResource EntryStyle}" />
+
+                    <Button Text="Login" Command="{Binding LoginCommand}" />
+                    <Button Text="Register" >
+                        <Button.Triggers>
+                            <EventTrigger Event="Clicked">
+                                <triggers:SwitchLoginViewEventTrigger Source="slLogin" Target="slRegister" Direction="Right" />
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Text="Forgot Password">
+                        <Button.Triggers>
+                            <EventTrigger Event="Clicked">
+                                <triggers:SwitchLoginViewEventTrigger Source="slLogin" Target="slForgotPassword" Direction="Right" />
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Text="Change Password">
+                        <Button.Triggers>
+                            <EventTrigger Event="Clicked">
+                                <triggers:SwitchLoginViewEventTrigger Source="slLogin" Target="slChangePassword" Direction="Right" />
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </StackLayout>
+
+                <StackLayout x:Name="slRegister" 
+                             Grid.Row="1" Grid.Column="0" 
+                             IsVisible="False"
+                             Padding="20,20,20,20"
+                >
+                    <Entry Placeholder="Email" Text="{Binding UserId}"  Style="{DynamicResource EntryStyle}" />
+                    <Entry Placeholder="First name" Text="{Binding FirstName}"  Style="{DynamicResource EntryStyle}" />
+                    <Entry Placeholder="Last name" Text="{Binding LastName}"  Style="{DynamicResource EntryStyle}" />
+
+                    <Button Text="Register" Command="{Binding RegisterCommand}" />
+                    <Button Text="Cancel">
+                        <Button.Triggers>
+                            <EventTrigger Event="Clicked">
+                                <triggers:SwitchLoginViewEventTrigger Source="slRegister" Target="slLogin" Direction="Left" />
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </StackLayout>
+                <StackLayout x:Name="slForgotPassword" 
+                             Grid.Row="1" Grid.Column="0" 
+                             IsVisible="False"
+                             Padding="20,20,20,20"
+                >
+                    <Entry Placeholder="Email" Text="{Binding UserId}"  Style="{DynamicResource EntryStyle}" />
+                    <Button Text="Send email" Command="{Binding SendEmailCommand}" />
+                    <Button Text="Cancel">
+                        <Button.Triggers>
+                            <EventTrigger Event="Clicked">
+                                <triggers:SwitchLoginViewEventTrigger Source="slForgotPassword" Target="slLogin" Direction="Left" />
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </StackLayout>
+                <StackLayout x:Name="slChangePassword"
+                             Grid.Row="1" Grid.Column="0"
+                             IsVisible="False"
+                             Padding="20,20,20,20"
+                >
+                    <Entry Placeholder="Old password" Text="{Binding OldPassword}" IsPassword="True" Style="{DynamicResource EntryStyle}" />
+                    <Entry Placeholder="New password" Text="{Binding NewPassword}" IsPassword="True" Style="{DynamicResource EntryStyle}" />
+                    <Entry Placeholder="Confirm password" Text="{Binding ConfirmPassword}" IsPassword="True" Style="{DynamicResource EntryStyle}" />
+                    <Button Text="OK" Command="{Binding ChangePasswordCommand}" />
+                    <Button Text="Cancel">
+                        <Button.Triggers>
+                            <EventTrigger Event="Clicked">
+                                <triggers:SwitchLoginViewEventTrigger Source="slChangePassword" Target="slLogin" Direction="Left" />
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </StackLayout>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
